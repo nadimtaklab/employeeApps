@@ -80,6 +80,7 @@ class EditEmployeeFragment : Fragment(R.layout.fragment_edit_employee), MenuProv
             setPositiveButton("Delete"){_,_ ->
                 employeeViewModel.deleteEmployee(currentEmployee)
                 view?.findNavController()?.popBackStack(R.id.homeFragment,false)
+                Toast.makeText(context, currentEmployee.firstName +" deleted", Toast.LENGTH_SHORT).show()
             }
             setNegativeButton("Cancel",null)
         }.create().show()

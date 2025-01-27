@@ -58,6 +58,9 @@ dependencies {
     //CIRCLE IMAGEVIEW
     implementation("de.hdodenhof:circleimageview:3.1.0")
 
+    // Swiper Refresh for RecycleView
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
+
     // ROOM
     val roomVersion = "2.6.1"
     implementation ("androidx.room:room-runtime:$roomVersion")

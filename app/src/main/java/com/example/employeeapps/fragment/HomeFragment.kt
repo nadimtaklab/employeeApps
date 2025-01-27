@@ -47,11 +47,19 @@ class HomeFragment : Fragment(R.layout.fragment_home), SearchView.OnQueryTextLis
         val menuHost = requireActivity()
         menuHost.addMenuProvider(this, viewLifecycleOwner, Lifecycle.State.RESUMED)
 
+        //ViewModel
         employeeViewModel =(activity as MainActivity).employeeViewModel
         setupHomeRecycleView()
 
+        //FAB Button
         binding.addEmployeeFab.setOnClickListener{
             it.findNavController().navigate(R.id.action_homeFragment_to_addEmployeeFragment)
+        }
+
+        // Swipe Refresh
+        binding.swiperRefresh.setOnRefreshListener {
+            setupHomeRecycleView()
+            binding.swiperRefresh.isRefreshing = false
         }
     }
 
@@ -59,11 +67,11 @@ class HomeFragment : Fragment(R.layout.fragment_home), SearchView.OnQueryTextLis
         if (note != null){
             if (note.isNotEmpty()){
                 binding.emptyNotesBackground.visibility = View.GONE
-                binding.homeRecyclerView.visibility = View.VISIBLE
+                binding.swiperRefresh.visibility = View.VISIBLE
             }
             else{
                 binding.emptyNotesBackground.visibility = View.VISIBLE
-                binding.homeRecyclerView.visibility = View.GONE
+                binding.swiperRefresh.visibility = View.GONE
             }
         }
     }
