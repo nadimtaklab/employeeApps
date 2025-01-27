@@ -27,5 +27,5 @@ interface EmployeeDao {
             "WHERE firstName LIKE :searchQuery " +
             "OR lastName LIKE :searchQuery " +
             "OR role LIKE :searchQuery")
-    fun searchEmployee(searchQuery: String): LiveData<List<Employee>>
+    fun searchEmployee(searchQuery: String?): LiveData<List<Employee>>
 }
