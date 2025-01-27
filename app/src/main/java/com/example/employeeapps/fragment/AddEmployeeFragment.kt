@@ -3,58 +3,87 @@ package com.example.employeeapps.fragment
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.view.MenuProvider
+import androidx.lifecycle.Lifecycle
+import androidx.navigation.findNavController
+import com.example.employeeapps.MainActivity
 import com.example.employeeapps.R
+import com.example.employeeapps.databinding.FragmentAddEmployeeBinding
+import com.example.employeeapps.model.Employee
+import com.example.employeeapps.viewmodel.EmployeeViewModel
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+class AddEmployeeFragment : Fragment(R.layout.fragment_add_employee), MenuProvider {
 
-/**
- * A simple [Fragment] subclass.
- * Use the [AddEmployeeFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class AddEmployeeFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    //Declare binding
+    private var addEmployeeBinding: FragmentAddEmployeeBinding? = null
+    private val binding get() = addEmployeeBinding!!
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    //Declare ViewModel
+    private lateinit var employeeViewModel: EmployeeViewModel
+
+    //Declare View
+    private lateinit var addEmployee: View
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_add_employee, container, false)
+        addEmployeeBinding = FragmentAddEmployeeBinding.inflate(inflater, container,false)
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment AddEmployeeFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            AddEmployeeFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val menuHost = requireActivity()
+        menuHost.addMenuProvider(this, viewLifecycleOwner, Lifecycle.State.RESUMED)
+
+        employeeViewModel = (activity as MainActivity).employeeViewModel
+        addEmployee = view
     }
+
+    private fun saveEmployee(view: View){
+        val firstName = binding.addEmployeeFirstName.text.toString().trim()
+        val lastName = binding.addEmployeeLastName.text.toString().trim()
+        val role = binding.addEmployeeRole.text.toString().trim()
+
+        if (firstName.isNotEmpty() && lastName.isNotEmpty() && role.isNotEmpty()){
+            val employee = Employee(0, firstName, lastName, role)
+            employeeViewModel.addEmployee(employee)
+
+            Toast.makeText(activity, "Employee Saved Successfully", Toast.LENGTH_SHORT).show()
+            view.findNavController().popBackStack(R.id.homeFragment, false)
+        } else {
+            Toast.makeText(context,"Please Fill All Fields",Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+        menu.clear()
+        menuInflater.inflate(R.menu.menu_add_employee, menu)
+    }
+
+    override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+        return when(menuItem.itemId){
+            R.id.saveMenu -> {
+                saveEmployee(addEmployee)
+                true
+            }
+            else -> false
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        addEmployeeBinding = null
+    }
+
 }

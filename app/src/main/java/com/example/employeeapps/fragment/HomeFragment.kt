@@ -12,7 +12,6 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.view.MenuProvider
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.findNavController
-import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.employeeapps.MainActivity
 import com.example.employeeapps.R
@@ -72,7 +71,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), SearchView.OnQueryTextLis
     private fun setupHomeRecycleView(){
         employeeAdapter = EmployeeAdapter()
         binding.homeRecyclerView.apply {
-            layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+            layoutManager = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
             setHasFixedSize(true)
             adapter = employeeAdapter
         }

@@ -48,7 +48,7 @@ class EmployeeAdapter: RecyclerView.Adapter<EmployeeAdapter.EmployeeViewHolder>(
 
         holder.itemView.setOnClickListener {
             val direction = HomeFragmentDirections
-                .actionHomeFragmentToEditEmployeeFragment()
+                .actionHomeFragmentToEditEmployeeFragment(currentEmployee)
             it.findNavController().navigate(direction)
         }
     }
