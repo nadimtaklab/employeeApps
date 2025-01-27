@@ -21,16 +21,36 @@
                 android:background="@drawable/pink_border"
                 android:padding="16dp">
 
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:id="@+id/employeeName"
-                    android:layout_weight="200"
-                    android:textColor="@color/red"
-                    android:fontFamily="@font/poppins"
-                    android:text="Employee Name"
-                    android:textStyle="bold"
-                    android:textSize="18sp"/>
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:id="@+id/employeeName">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="200"
+                        android:id="@+id/employeeFirstName"
+                        android:textColor="@color/red"
+                        android:fontFamily="@font/poppins"
+                        android:text="Employee Name"
+                        android:textStyle="bold"
+                        android:textSize="18sp"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="200"
+                        android:id="@+id/employeeLastName"
+                        android:textColor="@color/red"
+                        android:fontFamily="@font/poppins"
+                        android:text="Employee Name"
+                        android:textStyle="bold"
+                        android:textSize="18sp"/>
+
+                </LinearLayout>
+
 
                 <TextView
                     android:layout_width="match_parent"
