@@ -46,6 +46,8 @@ class EmployeeAdapter: RecyclerView.Adapter<EmployeeAdapter.EmployeeViewHolder>(
         holder.itemBinding.employeeLastName.text = currentEmployee.lastName
         holder.itemBinding.employeeRole.text = currentEmployee.role
 
+        holder.itemBinding.initialName.text = currentEmployee.firstName.first().toString()+currentEmployee.lastName.first().toString()
+
         holder.itemView.setOnClickListener {
             val direction = HomeFragmentDirections
                 .actionHomeFragmentToEditEmployeeFragment(currentEmployee)

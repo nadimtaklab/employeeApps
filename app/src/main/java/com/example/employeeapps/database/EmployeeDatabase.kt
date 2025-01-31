@@ -11,12 +11,14 @@ abstract class EmployeeDatabase: RoomDatabase() {
 
     abstract fun getEmployeeDao(): EmployeeDao
 
+    // Companion object to provide a singleton instance of the database
     companion object{
 
         @Volatile //guaranty only one thread access
         private var instance: EmployeeDatabase? = null
         private val LOCK = Any()
 
+        // Method to get the database instance
         operator fun invoke(context: Context) = instance ?:
         synchronized(LOCK){
             instance ?:

@@ -63,9 +63,9 @@ class HomeFragment : Fragment(R.layout.fragment_home), SearchView.OnQueryTextLis
         }
     }
 
-    private fun updateUI(note: List<Employee>?){
-        if (note != null){
-            if (note.isNotEmpty()){
+    private fun updateUI(employee: List<Employee>?){
+        if (employee != null){
+            if (employee.isNotEmpty()){
                 binding.emptyNotesBackground.visibility = View.GONE
                 binding.swiperRefresh.visibility = View.VISIBLE
             }
@@ -85,9 +85,9 @@ class HomeFragment : Fragment(R.layout.fragment_home), SearchView.OnQueryTextLis
         }
 
         activity.let {
-            employeeViewModel.getAllNotes().observe(viewLifecycleOwner){
-                    note->employeeAdapter.differ.submitList(note)
-                updateUI(note)
+            employeeViewModel.getAllEmployee().observe(viewLifecycleOwner){
+                employee->employeeAdapter.differ.submitList(employee)
+                updateUI(employee)
             }
         }
     }
@@ -95,7 +95,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), SearchView.OnQueryTextLis
     private fun searchEmployee(query: String?){
         val searchQuery = "%$query%"
 
-        employeeViewModel.searchNote(searchQuery).observe(this){
+        employeeViewModel.searchEmployee(searchQuery).observe(this){
                 list -> employeeAdapter.differ.submitList(list)
         }
     }

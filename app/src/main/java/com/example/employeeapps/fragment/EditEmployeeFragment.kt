@@ -16,9 +16,11 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.employeeapps.MainActivity
 import com.example.employeeapps.R
+import com.example.employeeapps.database.DuplicateCheckCallback
 import com.example.employeeapps.databinding.FragmentEditEmployeeBinding
 import com.example.employeeapps.model.Employee
 import com.example.employeeapps.viewmodel.EmployeeViewModel
+import java.util.regex.Pattern
 
 
 class EditEmployeeFragment : Fragment(R.layout.fragment_edit_employee), MenuProvider {
@@ -60,14 +62,34 @@ class EditEmployeeFragment : Fragment(R.layout.fragment_edit_employee), MenuProv
             val lastName = binding.editEmployeeLastName.text.toString().trim()
             val role = binding.addEmployeeRole.text.toString().trim()
 
-            if (firstName.isNotEmpty() && lastName.isNotEmpty() && role.isNotEmpty()) {
-                val employee = Employee(currentEmployee.id, firstName, lastName, role)
-                employeeViewModel.updateEmployee(employee)
-                Toast.makeText(activity, "Employee Update Successfully", Toast.LENGTH_SHORT).show()
-                view.findNavController().popBackStack(R.id.homeFragment, false)
-            } else {
-                Toast.makeText(context, "Please Fill All Fields", Toast.LENGTH_SHORT).show()
+            if (firstName.isEmpty() || lastName.isEmpty() || role.isEmpty()) {
+                Toast.makeText(context,"All Fields Required",Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
             }
+            if (!isValidName(firstName)) {
+                Toast.makeText(context,"First name must contain only alphabetic characters",Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            if (!isValidName(lastName)) {
+                Toast.makeText(context,"Last name must contain only alphabetic characters",Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            // Check for duplicate employee
+            isDuplicateEmployee(firstName, lastName, object : DuplicateCheckCallback {
+                override fun onResult(isDuplicate: Boolean) {
+                    if (isDuplicate) {
+                        // If duplicate, do not proceed with saving
+                        Toast.makeText(context,"An employee with the same name already exists",Toast.LENGTH_SHORT).show()
+                    }else{
+                        val employee = Employee(currentEmployee.id, firstName, lastName, role)
+                        employeeViewModel.updateEmployee(employee)
+                        Toast.makeText(activity, "Employee Update Successfully", Toast.LENGTH_SHORT).show()
+                        view.findNavController().popBackStack(R.id.homeFragment, false)
+                    }
+                }
+            })
+
         }
     }
 
@@ -75,8 +97,8 @@ class EditEmployeeFragment : Fragment(R.layout.fragment_edit_employee), MenuProv
         val activity = requireActivity() // Get the enclosing activity
 
         AlertDialog.Builder(activity).apply {
-            setTitle("Delete Note")
-            setMessage("Are you sure you want to delete this note?")
+            setTitle("Delete Employee")
+            setMessage("Are you sure you want to delete this employee?")
             setPositiveButton("Delete"){_,_ ->
                 employeeViewModel.deleteEmployee(currentEmployee)
                 view?.findNavController()?.popBackStack(R.id.homeFragment,false)
@@ -84,6 +106,17 @@ class EditEmployeeFragment : Fragment(R.layout.fragment_edit_employee), MenuProv
             }
             setNegativeButton("Cancel",null)
         }.create().show()
+    }
+
+    private fun isValidName(name: String): Boolean {
+        val pattern = Pattern.compile("^[a-zA-Z]+$")
+        return pattern.matcher(name).matches()
+    }
+
+    private fun isDuplicateEmployee(firstName: String, lastName: String, callback: DuplicateCheckCallback) {
+        employeeViewModel.doesEmployeeExist(firstName, lastName).observe(viewLifecycleOwner) { exist ->
+            callback.onResult(exist) // Call the callback with the result
+        }
     }
 
     override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {

@@ -27,5 +27,9 @@ interface EmployeeDao {
             "WHERE firstName LIKE :searchQuery " +
             "OR lastName LIKE :searchQuery " +
             "OR role LIKE :searchQuery")
+
     fun searchEmployee(searchQuery: String?): LiveData<List<Employee>>
+
+    @Query("SELECT EXISTS(SELECT 1 FROM employee WHERE firstName = :firstName AND lastName = :lastName)")
+    fun doesEmployeeExist(firstName: String, lastName: String): LiveData<Boolean>
 }

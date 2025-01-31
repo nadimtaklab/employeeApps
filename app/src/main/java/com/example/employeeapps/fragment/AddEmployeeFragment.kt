@@ -14,9 +14,11 @@ import androidx.lifecycle.Lifecycle
 import androidx.navigation.findNavController
 import com.example.employeeapps.MainActivity
 import com.example.employeeapps.R
+import com.example.employeeapps.database.DuplicateCheckCallback
 import com.example.employeeapps.databinding.FragmentAddEmployeeBinding
 import com.example.employeeapps.model.Employee
 import com.example.employeeapps.viewmodel.EmployeeViewModel
+import java.util.regex.Pattern
 
 class AddEmployeeFragment : Fragment(R.layout.fragment_add_employee), MenuProvider {
 
@@ -55,14 +57,45 @@ class AddEmployeeFragment : Fragment(R.layout.fragment_add_employee), MenuProvid
         val lastName = binding.addEmployeeLastName.text.toString().trim()
         val role = binding.addEmployeeRole.text.toString().trim()
 
-        if (firstName.isNotEmpty() && lastName.isNotEmpty() && role.isNotEmpty()){
-            val employee = Employee(0, firstName, lastName, role)
-            employeeViewModel.addEmployee(employee)
+        if (firstName.isEmpty() || lastName.isEmpty() || role.isEmpty()) {
+            Toast.makeText(context,"All Fields Required",Toast.LENGTH_SHORT).show()
+            return
+        }
+        if (!isValidName(firstName)) {
+            Toast.makeText(context,"First name must contain only alphabetic characters",Toast.LENGTH_SHORT).show()
+            return
+        }
+        if (!isValidName(lastName)) {
+            Toast.makeText(context,"Last name must contain only alphabetic characters",Toast.LENGTH_SHORT).show()
+            return
+        }
 
-            Toast.makeText(activity, "Employee Saved Successfully", Toast.LENGTH_SHORT).show()
-            view.findNavController().popBackStack(R.id.homeFragment, false)
-        } else {
-            Toast.makeText(context,"Please Fill All Fields",Toast.LENGTH_SHORT).show()
+        // Check for duplicate employee
+        isDuplicateEmployee(firstName, lastName, object : DuplicateCheckCallback {
+            override fun onResult(isDuplicate: Boolean) {
+                if (isDuplicate) {
+                    // If duplicate, do not proceed with saving
+                    Toast.makeText(context,"An employee with the same name already exists",Toast.LENGTH_SHORT).show()
+                }else{
+                    // If not a duplicate, proceed to save the employee
+                    val employee = Employee(0, firstName, lastName, role)
+                    employeeViewModel.addEmployee(employee)
+
+                    Toast.makeText(activity, "Employee Saved Successfully", Toast.LENGTH_SHORT).show()
+                    view.findNavController().popBackStack(R.id.homeFragment, false)
+                }
+            }
+        })
+    }
+
+    private fun isValidName(name: String): Boolean {
+        val pattern = Pattern.compile("^[a-zA-Z]+$")
+        return pattern.matcher(name).matches()
+    }
+
+    private fun isDuplicateEmployee(firstName: String, lastName: String, callback: DuplicateCheckCallback) {
+        employeeViewModel.doesEmployeeExist(firstName, lastName).observe(viewLifecycleOwner) { exist ->
+            callback.onResult(exist) // Call the callback with the result
         }
     }
 

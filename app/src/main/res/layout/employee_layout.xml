@@ -13,53 +13,82 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:background="@drawable/pink_border"
-                android:padding="16dp">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:id="@+id/employeeName">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="200"
-                        android:id="@+id/employeeFirstName"
-                        android:textColor="@color/red"
-                        android:fontFamily="@font/poppins"
-                        android:text="First Name"
-                        android:textStyle="bold"
-                        android:textSize="18sp"/>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="200"
-                        android:id="@+id/employeeLastName"
-                        android:textColor="@color/red"
-                        android:fontFamily="@font/poppins"
-                        android:text="Last Name"
-                        android:textStyle="bold"
-                        android:textSize="18sp"
-                        android:layout_marginLeft="8dp"/>
-
-                </LinearLayout>
-
+                android:orientation="horizontal"
+                android:background="@drawable/pink_border">
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:id="@+id/initialName"
+                    android:layout_width="0dp"
+                    android:layout_weight="3"
                     android:layout_height="wrap_content"
-                    android:id="@+id/employeeRole"
-                    android:layout_marginTop="8dp"
-                    android:maxHeight="170dp"
-                    android:text="Designition"
-                    android:textSize="14sp"
-                    android:fontFamily="@font/poppins"
-                    android:textColor="@color/pink"/>
+                    android:text="IN"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:textSize="70sp"
+                    android:background="@drawable/pink_border"
+                    />
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="7"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    >
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"
+                            android:id="@+id/employeeName">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="200"
+                                android:id="@+id/employeeFirstName"
+                                android:textColor="@color/red"
+                                android:fontFamily="@font/poppins"
+                                android:text="First Name"
+                                android:textStyle="bold"
+                                android:textSize="18sp"/>
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="200"
+                                android:id="@+id/employeeLastName"
+                                android:textColor="@color/red"
+                                android:fontFamily="@font/poppins"
+                                android:text="Last Name"
+                                android:textStyle="bold"
+                                android:textSize="18sp"
+                                android:layout_marginLeft="8dp"/>
+
+                        </LinearLayout>
+
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/employeeRole"
+                            android:layout_marginTop="8dp"
+                            android:maxHeight="170dp"
+                            android:text="Designition"
+                            android:textSize="14sp"
+                            android:fontFamily="@font/poppins"
+                            android:textColor="@color/pink"/>
+
+                    </LinearLayout>
+                </LinearLayout>
             </LinearLayout>
+
+
+
+
         </androidx.cardview.widget.CardView>
 </layout>

@@ -26,7 +26,9 @@ class EmployeeViewModel(
             employeeRepository.deleteEmployee(employee)
         }
 
-    fun getAllNotes() = employeeRepository.getAllEmployee()
+    fun getAllEmployee() = employeeRepository.getAllEmployee()
 
-    fun searchNote(query: String?) = employeeRepository.searchEmployee(query)
+    fun searchEmployee(query: String?) = employeeRepository.searchEmployee(query)
+
+    fun doesEmployeeExist(firstName: String, lastName: String) = employeeRepository.doesEmployeeExist(firstName, lastName)
 }

@@ -11,4 +11,5 @@ class EmployeeRepository(private val db: EmployeeDatabase) {
 
     fun getAllEmployee() = db.getEmployeeDao().getAllEmployee()
     fun searchEmployee(query: String?) = db.getEmployeeDao().searchEmployee(query)
+    fun doesEmployeeExist(firstName: String, lastName: String) = db.getEmployeeDao().doesEmployeeExist(firstName, lastName)
 }
