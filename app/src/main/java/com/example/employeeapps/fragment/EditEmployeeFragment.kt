@@ -76,20 +76,24 @@ class EditEmployeeFragment : Fragment(R.layout.fragment_edit_employee), MenuProv
             }
 
             // Check for duplicate employee
-            isDuplicateEmployee(firstName, lastName, object : DuplicateCheckCallback {
-                override fun onResult(isDuplicate: Boolean) {
-                    if (isDuplicate) {
-                        // If duplicate, do not proceed with saving
-                        Toast.makeText(context,"An employee with the same name already exists",Toast.LENGTH_SHORT).show()
-                    }else{
-                        val employee = Employee(currentEmployee.id, firstName, lastName, role)
-                        employeeViewModel.updateEmployee(employee)
-                        Toast.makeText(activity, "Employee Update Successfully", Toast.LENGTH_SHORT).show()
-                        view.findNavController().popBackStack(R.id.homeFragment, false)
+            if (firstName == currentEmployee.firstName && lastName == currentEmployee.lastName) {
+                Toast.makeText(context,"No changes made",Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }else{
+                isDuplicateEmployee(firstName, lastName, object : DuplicateCheckCallback {
+                    override fun onResult(isDuplicate: Boolean) {
+                        if (isDuplicate) {
+                            // If duplicate, do not proceed with saving
+                            Toast.makeText(context,"An employee with the same name already exists",Toast.LENGTH_SHORT).show()
+                        }else{
+                            val employee = Employee(currentEmployee.id, firstName, lastName, role)
+                            employeeViewModel.updateEmployee(employee)
+                            Toast.makeText(activity, "Employee Update Successfully", Toast.LENGTH_SHORT).show()
+                            view.findNavController().popBackStack(R.id.homeFragment, false)
+                        }
                     }
-                }
-            })
-
+                })
+            }
         }
     }
 
