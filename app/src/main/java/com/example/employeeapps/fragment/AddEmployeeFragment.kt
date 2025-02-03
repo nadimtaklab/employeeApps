@@ -69,6 +69,10 @@ class AddEmployeeFragment : Fragment(R.layout.fragment_add_employee), MenuProvid
             Toast.makeText(context,"Last name must contain only alphabetic characters",Toast.LENGTH_SHORT).show()
             return
         }
+        if (!isValidName(role)) {
+            Toast.makeText(context,"Role must contain only alphabetic characters",Toast.LENGTH_SHORT).show()
+            return
+        }
 
         // Check for duplicate employee
         isDuplicateEmployee(firstName, lastName, object : DuplicateCheckCallback {

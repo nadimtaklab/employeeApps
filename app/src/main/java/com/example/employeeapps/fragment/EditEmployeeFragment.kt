@@ -74,6 +74,10 @@ class EditEmployeeFragment : Fragment(R.layout.fragment_edit_employee), MenuProv
                 Toast.makeText(context,"Last name must contain only alphabetic characters",Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
+            if (!isValidName(role)) {
+                Toast.makeText(context,"Role must contain only alphabetic characters",Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
 
             // Check for duplicate employee
             if (firstName == currentEmployee.firstName && lastName == currentEmployee.lastName) {

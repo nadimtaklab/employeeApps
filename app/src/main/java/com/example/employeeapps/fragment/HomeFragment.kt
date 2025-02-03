@@ -59,8 +59,15 @@ class HomeFragment : Fragment(R.layout.fragment_home), SearchView.OnQueryTextLis
         // Swipe Refresh
         binding.swiperRefresh.setOnRefreshListener {
             setupHomeRecycleView()
+            updateSearchText()
             binding.swiperRefresh.isRefreshing = false
         }
+    }
+
+    private fun updateSearchText() {
+        // search on menu provider update
+        val menuHost = requireActivity()
+        menuHost.addMenuProvider(this, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
     private fun updateUI(employee: List<Employee>?){
