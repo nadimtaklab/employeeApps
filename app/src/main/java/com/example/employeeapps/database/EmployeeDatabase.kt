@@ -27,6 +27,7 @@ abstract class EmployeeDatabase: RoomDatabase() {
             }
         }
 
+        // Method to create the database
         private fun createDatabase(context: Context) =
             Room.databaseBuilder(
                 context.applicationContext,

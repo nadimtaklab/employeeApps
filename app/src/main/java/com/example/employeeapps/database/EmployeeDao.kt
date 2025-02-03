@@ -30,6 +30,6 @@ interface EmployeeDao {
 
     fun searchEmployee(searchQuery: String?): LiveData<List<Employee>>
 
-    @Query("SELECT EXISTS(SELECT 1 FROM employee WHERE firstName = :firstName AND lastName = :lastName)")
+    @Query("SELECT EXISTS(SELECT 1 FROM employee WHERE firstName LIKE :firstName AND lastName LIKE :lastName)")
     fun doesEmployeeExist(firstName: String, lastName: String): LiveData<Boolean>
 }
